@@ -206,21 +206,12 @@ export default function Hero() {
           </a>
           <span>/</span>
           <a
-            href="#" // TODO: Ayaan, LinkedIn URL
+            href="https://linkedin.com" // TODO: Ayaan, LinkedIn URL
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-cyan-400 transition-colors uppercase"
           >
             LI
-          </a>
-          <span>/</span>
-          <a
-            href="#" // TODO: Ayaan, Twitter/X URL
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-cyan-400 transition-colors uppercase"
-          >
-            X
           </a>
           <span>/</span>
           <a

@@ -72,21 +72,12 @@ export default function Footer() {
                 <ArrowUpRight className="w-3 h-3 opacity-60" />
               </a>
               <a
-                href="#" // TODO: Ayaan, LinkedIn
+                href="https://linkedin.com" // TODO: Ayaan, LinkedIn
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-cyan-400 transition-colors flex items-center gap-1"
               >
                 <span>LINKEDIN</span>
-                <ArrowUpRight className="w-3 h-3 opacity-60" />
-              </a>
-              <a
-                href="#" // TODO: Ayaan, Twitter/X
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-cyan-400 transition-colors flex items-center gap-1"
-              >
-                <span>TWITTER/X</span>
                 <ArrowUpRight className="w-3 h-3 opacity-60" />
               </a>
               <a
