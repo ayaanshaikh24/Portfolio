@@ -12,8 +12,8 @@ export const projects = [
     ],
     tech: ["MongoDB", "Express.js", "React", "Node.js", "Tailwind CSS", "REST APIs"],
     category: "Full-Stack (MERN)",
-    github: "https://github.com/Git-ayaanshaikh24", // TODO: Update with direct repository link
-    demo: "#", // TODO: Update with live deployment URL
+    github: "https://github.com/ayaanshaikh24/miniproject1",
+    demo: "https://pricewiseai.netlify.app/",
     featured: true,
     isPlaceholder: false
   },
