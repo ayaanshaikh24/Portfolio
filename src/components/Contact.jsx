@@ -118,7 +118,7 @@ export default function Contact() {
 
             <div className="space-y-4">
               <a
-                href="https://github.com/Git-ayaanshaikh24"
+                href="https://github.com/ayaanshaikh24"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-5 bg-slate-50 dark:bg-[#111115] border border-slate-200 dark:border-white/10 flex items-center justify-between group hover:border-cyan-400 transition-all duration-200 block"
@@ -126,14 +126,14 @@ export default function Contact() {
                 <div>
                   <span className="text-[10px] text-slate-400 dark:text-[#686875] block uppercase">01. CODE REPOSITORIES</span>
                   <span className="text-sm font-bold text-slate-900 dark:text-[#ededed] group-hover:text-cyan-400 transition-colors">
-                    GitHub // @Git-ayaanshaikh24
+                    GitHub // @ayaanshaikh24
                   </span>
                 </div>
                 <ArrowUpRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
 
               <a
-                href="https://linkedin.com" // TODO: Ayaan, add your direct LinkedIn URL
+                href="https://www.linkedin.com/in/ayaan-shaikh-094b22331"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-5 bg-slate-50 dark:bg-[#111115] border border-slate-200 dark:border-white/10 flex items-center justify-between group hover:border-cyan-400 transition-all duration-200 block"
@@ -141,7 +141,7 @@ export default function Contact() {
                 <div>
                   <span className="text-[10px] text-slate-400 dark:text-[#686875] block uppercase">02. PROFESSIONAL NETWORK</span>
                   <span className="text-sm font-bold text-slate-900 dark:text-[#ededed] group-hover:text-cyan-400 transition-colors">
-                    LinkedIn // Ayaan Shaikh
+                    LinkedIn // ayaan-shaikh-094b22331
                   </span>
                 </div>
                 <ArrowUpRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

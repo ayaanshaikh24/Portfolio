@@ -197,7 +197,7 @@ export default function Hero() {
         {/* Monospace tucked social links */}
         <div className="flex items-center gap-4 text-slate-600 dark:text-[#8e8e99]">
           <a
-            href="https://github.com/Git-ayaanshaikh24"
+            href="https://github.com/ayaanshaikh24"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-cyan-400 transition-colors uppercase"
@@ -206,7 +206,7 @@ export default function Hero() {
           </a>
           <span>/</span>
           <a
-            href="https://linkedin.com" // TODO: Ayaan, LinkedIn URL
+            href="https://www.linkedin.com/in/ayaan-shaikh-094b22331"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-cyan-400 transition-colors uppercase"
