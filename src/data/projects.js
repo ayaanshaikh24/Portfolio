@@ -36,21 +36,21 @@ export const projects = [
     isPlaceholder: false
   },
   {
-    id: "project-placeholder-3",
-    title: "Real-Time Collaborative Workspace", // TODO: Ayaan, replace with your 3rd project title
-    tagline: "High-concurrency collaborative suite with live updates",
-    description: "Web application featuring synchronized real-time document editing, instant team messaging, and automated project milestone tracking.",
-    image: "/images/projects/project3.png", // TODO: Replace with your project screenshot
+    id: "record-house",
+    title: "Record House: Vintage Vinyls & Analog Catalog",
+    tagline: "Curated physical music archiving platform & analog catalog system",
+    description: "Engineered an interactive digital catalog and collection platform for Record House (Estd. 1975). Features deep genre filtering across 400+ vinyl, CD, and cassette releases, structured Schema.org SEO metadata, and universal inquiry workflows.",
+    image: "/images/projects/project3.png", // Record House platform preview
     features: [
-      "WebSocket-driven live sync engine with sub-50ms latency",
-      "Role-based access control with granular project permissions",
-      "Interactive data visualization charts and activity logs"
+      "Developed an interactive catalog browser with dynamic genre filtering across 10+ music categories",
+      "Built a streamlined universal enquiry modal with client validation and automated contact routing",
+      "Implemented high-performance image optimization, Schema.org LocalBusiness SEO, and accessible UI"
     ],
-    tech: ["React", "Node.js", "Socket.io", "MongoDB", "Tailwind CSS"],
+    tech: ["JavaScript (ES6+)", "HTML5", "CSS3 / Sass", "Schema.org SEO", "Vercel"],
     category: "Web Application",
-    github: "https://github.com/Git-ayaanshaikh24", // TODO: Update with your repo link
-    demo: "#", // TODO: Update with live demo URL
+    github: "https://github.com/ayaanshaikh24/Record-House",
+    demo: "https://recordhouse.vercel.app/",
     featured: false,
-    isPlaceholder: true // Marked as placeholder for Ayaan to customize
+    isPlaceholder: false
   }
 ];
