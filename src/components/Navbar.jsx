@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Code, FileText, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import DarkModeToggle from './DarkModeToggle';
+import { Menu, X, Sun, Moon, ArrowUpRight } from 'lucide-react';
+import MagneticElement from './MagneticElement';
 
 export default function Navbar({ isDark, toggleDarkMode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,14 +19,14 @@ export default function Navbar({ isDark, toggleDarkMode }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > 40) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
 
       const sections = ['hero', 'about', 'skills', 'projects', 'experience', 'education', 'achievements', 'contact'];
-      const scrollPosition = window.scrollY + 200;
+      const scrollPosition = window.scrollY + 250;
 
       for (const sectionId of sections) {
         const el = document.getElementById(sectionId);
@@ -57,39 +56,107 @@ export default function Navbar({ isDark, toggleDarkMode }) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'glass-panel shadow-lg shadow-slate-900/5 dark:shadow-black/40 py-3'
-          : 'bg-transparent py-5'
+          ? 'bg-[#0a0a0c]/85 dark:bg-[#0a0a0c]/90 backdrop-blur-md editorial-border-b py-4'
+          : 'bg-transparent py-6'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo / Plain text initials */}
           <a
             href="#hero"
             onClick={(e) => handleLinkClick(e, '#hero')}
-            className="group flex items-center gap-2.5 text-xl font-bold tracking-tight focus:outline-none"
+            className="group font-mono text-xs tracking-wider uppercase flex items-center gap-2 focus:outline-none"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 p-[2px] shadow-md group-hover:shadow-indigo-500/25 transition-all duration-300">
-              <div className="w-full h-full bg-slate-900 rounded-[10px] flex items-center justify-center">
-                <span className="font-heading font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-indigo-300 text-base">
-                  AS
-                </span>
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-slate-900 dark:text-white font-heading font-bold text-lg leading-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                Ayaan<span className="text-indigo-600 dark:text-cyan-400">.dev</span>
-              </span>
-              <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">
-                MERN DEVELOPER
-              </span>
-            </div>
+            <span className="font-bold text-slate-900 dark:text-[#ededed] group-hover:text-cyan-400 transition-colors">
+              AYAAN SHAIKH
+            </span>
+            <span className="text-slate-400 dark:text-neutral-500 font-normal">
+              // MERN DEVELOPER
+            </span>
           </a>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 bg-slate-100/70 dark:bg-slate-900/60 p-1.5 rounded-full border border-slate-200/60 dark:border-slate-800/80 backdrop-blur-md">
+          {/* Right-aligned Minimalist Nav Cluster */}
+          <div className="hidden lg:flex items-center gap-8">
+            <nav className="flex items-center gap-6">
+              {navLinks.map((link, idx) => {
+                const isActive = activeSection === link.href.substring(1);
+                return (
+                  <MagneticElement key={link.name} strength={0.15}>
+                    <a
+                      href={link.href}
+                      onClick={(e) => handleLinkClick(e, link.href)}
+                      className={`font-mono text-xs uppercase tracking-wider transition-colors relative py-1 ${
+                        isActive
+                          ? 'text-cyan-400 font-semibold'
+                          : 'text-slate-600 dark:text-[#8e8e99] hover:text-slate-900 dark:hover:text-[#ededed]'
+                      }`}
+                    >
+                      <span>{link.name}</span>
+                      {isActive && (
+                        <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-cyan-400" />
+                      )}
+                    </a>
+                  </MagneticElement>
+                );
+              })}
+            </nav>
+
+            {/* Separator */}
+            <div className="w-[1px] h-3 bg-slate-300 dark:bg-neutral-800" />
+
+            {/* Right Cluster: Theme toggle & Minimal Resume text link */}
+            <div className="flex items-center gap-5 font-mono text-xs">
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 uppercase tracking-wider text-slate-900 dark:text-[#ededed] hover:text-cyan-400 transition-colors editorial-link"
+              >
+                <span>[ RESUME ]</span>
+                <ArrowUpRight className="w-3 h-3 opacity-70" />
+              </a>
+
+              <button
+                onClick={toggleDarkMode}
+                aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+                className="text-slate-600 dark:text-[#8e8e99] hover:text-slate-900 dark:hover:text-[#ededed] transition-colors p-1"
+              >
+                {isDark ? (
+                  <Sun className="w-3.5 h-3.5" />
+                ) : (
+                  <Moon className="w-3.5 h-3.5" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Menu Trigger */}
+          <div className="flex items-center gap-4 lg:hidden">
+            <button
+              onClick={toggleDarkMode}
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              className="text-slate-600 dark:text-[#8e8e99] hover:text-slate-900 dark:hover:text-[#ededed] p-1"
+            >
+              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-1 text-slate-900 dark:text-[#ededed] focus:outline-none"
+              aria-label="Toggle navigation menu"
+            >
+              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Drawer Menu */}
+      {isOpen && (
+        <div className="lg:hidden bg-[#0a0a0c] editorial-border-b px-6 py-6 space-y-4">
+          <div className="flex flex-col space-y-3">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.substring(1);
               return (
@@ -97,99 +164,30 @@ export default function Navbar({ isDark, toggleDarkMode }) {
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className={`relative px-3.5 py-1.5 text-sm font-medium rounded-full transition-all duration-200 ${
-                    isActive
-                      ? 'text-white font-semibold'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
+                  className={`font-mono text-xs uppercase tracking-wider flex items-center justify-between py-2 border-b border-white/5 ${
+                    isActive ? 'text-cyan-400 font-semibold' : 'text-[#8e8e99] hover:text-[#ededed]'
                   }`}
                 >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeNavIndicator"
-                      className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-cyan-600 rounded-full shadow-sm"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                  <span className="relative z-10">{link.name}</span>
+                  <span>{link.name}</span>
+                  <span className="text-[10px] text-neutral-600 font-mono">→</span>
                 </a>
               );
             })}
-          </nav>
 
-          {/* Right Action Buttons */}
-          <div className="hidden sm:flex items-center gap-3">
-            <DarkModeToggle isDark={isDark} toggleDarkMode={toggleDarkMode} />
-            
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>Resume</span>
-            </a>
-          </div>
-
-          {/* Mobile menu & dark mode button */}
-          <div className="flex items-center gap-2 lg:hidden">
-            <DarkModeToggle isDark={isDark} toggleDarkMode={toggleDarkMode} />
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-xl bg-slate-200/70 dark:bg-slate-800/70 text-slate-700 dark:text-slate-200 hover:bg-slate-300/70 dark:hover:bg-slate-700/70 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              aria-label="Toggle navigation menu"
-            >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            <div className="pt-3 flex items-center justify-between">
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs uppercase tracking-wider text-cyan-400 flex items-center gap-1 py-1"
+              >
+                <span>[ VIEW RESUME / CV ]</span>
+                <ArrowUpRight className="w-3 h-3" />
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Mobile Drawer Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25 }}
-            className="lg:hidden glass-panel border-b border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden"
-          >
-            <div className="max-w-7xl mx-auto px-4 pt-3 pb-6 space-y-2">
-              {navLinks.map((link) => {
-                const isActive = activeSection === link.href.substring(1);
-                return (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={(e) => handleLinkClick(e, link.href)}
-                    className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                      isActive
-                        ? 'bg-indigo-600 text-white font-semibold shadow-md shadow-indigo-600/30'
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60'
-                    }`}
-                  >
-                    <span>{link.name}</span>
-                    <ChevronRight className="w-4 h-4 opacity-70" />
-                  </a>
-                );
-              })}
-              
-              <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">
-                <a
-                  href="/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 text-white shadow-md shadow-indigo-500/20"
-                >
-                  <FileText className="w-4 h-4" />
-                  <span>View / Download Resume (PDF)</span>
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      )}
     </header>
   );
 }

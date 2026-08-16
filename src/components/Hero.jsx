@@ -1,266 +1,235 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Download, Eye, ArrowRight, Github, Linkedin, Twitter, Mail, Award, Sparkles, Terminal, Code2 } from 'lucide-react';
+import React, { useRef, useEffect, useState } from 'react';
+import gsap from 'gsap';
+import { ArrowDownRight, ArrowUpRight, Download } from 'lucide-react';
+import MagneticElement from './MagneticElement';
 
 export default function Hero() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-      },
-    },
-  };
+  const containerRef = useRef(null);
+  const nameRef = useRef(null);
+  const taglineRef = useRef(null);
+  const bioRef = useRef(null);
+  const ctaRef = useRef(null);
+  const metadataRef = useRef(null);
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 25 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-    },
-  };
+  const [typewriterText, setTypewriterText] = useState('');
+  const fullMetadata = '[ FULL-STACK / MERN / OPEN TO WORK ]';
+
+  // Typewriter effect for metadata line
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index <= fullMetadata.length) {
+        setTypewriterText(fullMetadata.substring(0, index));
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 45);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // GSAP Character stagger & Masked wipe animations
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      // Split characters for name
+      const nameChars = nameRef.current?.querySelectorAll('.char');
+      if (nameChars && nameChars.length > 0) {
+        gsap.fromTo(
+          nameChars,
+          { y: '120%', opacity: 0, rotateZ: 3 },
+          {
+            y: '0%',
+            opacity: 1,
+            rotateZ: 0,
+            duration: 1,
+            stagger: 0.04,
+            ease: 'power4.out',
+            delay: 0.2,
+          }
+        );
+      }
+
+      // Tagline masked slide-up
+      gsap.fromTo(
+        taglineRef.current,
+        { y: '110%', opacity: 0 },
+        {
+          y: '0%',
+          opacity: 1,
+          duration: 0.9,
+          ease: 'power3.out',
+          delay: 0.6,
+        }
+      );
+
+      // Bio fade & rise
+      gsap.fromTo(
+        bioRef.current,
+        { y: 25, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power2.out',
+          delay: 0.8,
+        }
+      );
+
+      // CTAs
+      gsap.fromTo(
+        ctaRef.current,
+        { y: 20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          ease: 'power2.out',
+          delay: 1.0,
+        }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const fullName = "Ayaan Shaikh";
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
-      {/* Background ambient gradient orbs */}
-      <div className="absolute top-1/4 -left-40 w-96 h-96 bg-indigo-500/20 dark:bg-indigo-600/15 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow" />
-      <div className="absolute bottom-1/4 -right-40 w-96 h-96 bg-cyan-500/20 dark:bg-cyan-500/15 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-indigo-500/5 via-violet-500/5 to-cyan-500/5 rounded-full blur-2xl pointer-events-none -z-10" />
+    <section
+      id="hero"
+      ref={containerRef}
+      className="relative min-h-[92vh] flex flex-col justify-between pt-32 pb-12 sm:pt-36 sm:pb-16 editorial-border-b"
+    >
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full flex-1 flex flex-col justify-center">
+        {/* Monospace Metadata Line (Typewriter) */}
+        <div ref={metadataRef} className="mb-6 flex items-center gap-3">
+          <span className="font-mono text-xs text-cyan-400 tracking-wider">
+            {typewriterText}
+            <span className="animate-pulse">_</span>
+          </span>
+        </div>
 
-      {/* Grid Pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none -z-10" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center"
-        >
-          {/* Left Content Column */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left">
-            {/* Status Badge */}
-            <motion.div variants={itemVariants} className="mb-4">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-indigo-100/80 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/80 shadow-sm backdrop-blur-sm">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                <span className="w-2 h-2 rounded-full bg-emerald-500 -ml-4" />
-                <span>Full-Stack Development Intern @ Labmentix</span>
+        {/* Huge Solid Typography Name (Single column, clamp(3rem, 10vw, 8rem)) */}
+        <div className="overflow-hidden py-2">
+          <h1
+            ref={nameRef}
+            className="text-[clamp(3rem,9.5vw,8rem)] font-extrabold tracking-tighter text-slate-900 dark:text-[#ededed] leading-[0.9] flex flex-wrap"
+          >
+            {fullName.split("").map((char, index) => (
+              <span key={index} className="inline-block overflow-hidden">
+                <span className="char inline-block will-change-transform">
+                  {char === " " ? "\u00A0" : char}
+                </span>
               </span>
-            </motion.div>
+            ))}
+          </h1>
+        </div>
 
-            {/* Main Greeting & Name */}
-            <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight">
-              Hi, I'm{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-cyan-500 dark:from-indigo-400 dark:via-cyan-300 dark:to-teal-300">
-                Ayaan Shaikh
-              </span>
-            </motion.h1>
-
-            {/* Tagline / Subheading */}
-            <motion.div variants={itemVariants} className="mt-3 flex items-center gap-2">
-              <span className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-800 dark:text-slate-200 font-heading">
-                Full-Stack Developer (MERN Stack)
-              </span>
-            </motion.div>
-
-            {/* Polished Bio */}
-            <motion.p
-              variants={itemVariants}
-              className="mt-5 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl"
-            >
-              Computer Engineering student at <strong className="text-slate-900 dark:text-white font-semibold">VPP COE</strong> with proven hands-on full-stack development experience across two internships. Specializing in high-performance <strong className="text-slate-900 dark:text-white font-semibold">MERN stack</strong> applications, scalable REST APIs, and modern reactive UIs. National-level hackathon winner with a passion for turning complex problems into elegant web software.
-            </motion.p>
-
-            {/* Action Buttons Row */}
-            <motion.div variants={itemVariants} className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4 w-full sm:w-auto">
-              <a
-                href="#projects"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-indigo-600 via-indigo-700 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <span>Explore Projects</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
-
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm text-slate-800 dark:text-slate-200 bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <Mail className="w-4 h-4" />
-                <span>Contact Me</span>
-              </a>
-
-              {/* Resume Buttons */}
-              <div className="flex items-center gap-2">
-                <a
-                  href="/resume.pdf"
-                  download="Ayaan_Shaikh_Resume.pdf"
-                  className="inline-flex items-center justify-center gap-1.5 px-4 py-3.5 rounded-xl font-medium text-xs text-indigo-700 dark:text-cyan-300 bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 border border-indigo-200 dark:border-indigo-800 transition-all duration-200 hover:scale-[1.02]"
-                  title="Download Resume PDF"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Download CV</span>
-                </a>
-
-                <a
-                  href="/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center p-3.5 rounded-xl text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700/80 transition-all duration-200"
-                  title="View Resume in new tab"
-                >
-                  <Eye className="w-4 h-4" />
-                </a>
-              </div>
-            </motion.div>
-
-            {/* Social Links & Quick Contact */}
-            <motion.div variants={itemVariants} className="mt-8 flex items-center gap-4 text-slate-500 dark:text-slate-400">
-              <span className="text-xs uppercase tracking-wider font-mono font-semibold">Connect:</span>
-              <div className="flex items-center gap-2">
-                <a
-                  href="https://github.com/Git-ayaanshaikh24"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub Profile"
-                  className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 dark:hover:text-white transition-all duration-200 hover:-translate-y-0.5"
-                >
-                  <Github className="w-4 h-4" />
-                </a>
-                <a
-                  href="#" // TODO: Ayaan, replace with your LinkedIn profile URL
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn Profile"
-                  className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white transition-all duration-200 hover:-translate-y-0.5"
-                >
-                  <Linkedin className="w-4 h-4" />
-                </a>
-                <a
-                  href="#" // TODO: Ayaan, replace with your Twitter/X profile URL
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Twitter/X Profile"
-                  className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-sky-500 hover:text-white dark:hover:bg-sky-500 dark:hover:text-white transition-all duration-200 hover:-translate-y-0.5"
-                >
-                  <Twitter className="w-4 h-4" />
-                </a>
-                <a
-                  href="mailto:ayaanswork24@gmail.com"
-                  aria-label="Send Email"
-                  className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-red-500 hover:text-white dark:hover:bg-red-500 dark:hover:text-white transition-all duration-200 hover:-translate-y-0.5"
-                >
-                  <Mail className="w-4 h-4" />
-                </a>
-              </div>
-            </motion.div>
+        {/* Tagline masked wipe */}
+        <div className="overflow-hidden mt-4 sm:mt-6 mb-6">
+          <div ref={taglineRef} className="will-change-transform">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-slate-700 dark:text-[#a0a0ab] tracking-tight">
+              Full-Stack Developer crafting scalable MERN applications & rapid hackathon prototypes.
+            </h2>
           </div>
+        </div>
 
-          {/* Right Visual Card Column */}
-          <div className="lg:col-span-5 flex justify-center">
-            <motion.div
-              variants={itemVariants}
-              className="relative w-full max-w-md"
+        {/* Polished Editorial Bio */}
+        <div ref={bioRef} className="max-w-2xl">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-[#8e8e99] leading-relaxed">
+            Computer Engineering student at <strong className="text-slate-900 dark:text-[#ededed] font-medium">VPP COE</strong> with hands-on full-stack development experience across two internships. Currently working at <strong className="text-slate-900 dark:text-[#ededed] font-medium">Labmentix</strong> (May 2026 – Nov 2026) building scalable MERN stack projects, previously at <strong className="text-slate-900 dark:text-[#ededed] font-medium">Code-Alpha</strong>. National-level hackathon winner (Quasar 4.0).
+          </p>
+        </div>
+
+        {/* Refactored Minimal Bracketed/Underlined Action Links */}
+        <div ref={ctaRef} className="mt-10 sm:mt-12 flex flex-wrap items-center gap-6 sm:gap-8">
+          <MagneticElement strength={0.2}>
+            <a
+              href="#projects"
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="editorial-link text-xs sm:text-sm font-mono text-slate-900 dark:text-[#ededed] hover:text-cyan-400 py-1"
             >
-              {/* Decorative background glow behind profile card */}
-              <div className="absolute -inset-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 rounded-3xl blur-lg opacity-40 group-hover:opacity-75 transition duration-500" />
-              
-              {/* Profile / Interactive Code Card */}
-              <div className="relative rounded-2xl glass-card p-6 shadow-2xl border border-slate-200/80 dark:border-slate-700/80 overflow-hidden">
-                {/* Window header */}
-                <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200 dark:border-slate-800">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-red-500/80 inline-block" />
-                    <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block" />
-                    <span className="w-3 h-3 rounded-full bg-green-500/80 inline-block" />
-                  </div>
-                  <span className="text-xs font-mono text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                    <Terminal className="w-3.5 h-3.5 text-indigo-500" />
-                    ayaan-profile.js
-                  </span>
-                  <div className="w-8" />
-                </div>
+              <span>[ VIEW WORK → ]</span>
+            </a>
+          </MagneticElement>
 
-                {/* Profile Photo Placeholder with stylish avatar badge */}
-                <div className="relative mb-5 flex flex-col items-center">
-                  <div className="relative w-36 h-36 rounded-2xl p-1 bg-gradient-to-tr from-indigo-500 via-cyan-400 to-purple-600 shadow-xl overflow-hidden group">
-                    <img
-                      src="/images/profile.jpg"
-                      alt="Ayaan Shaikh"
-                      onError={(e) => {
-                        // High-tech stylized SVG avatar fallback if image is absent
-                        e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' fill='%231e1b4b'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='38' font-weight='bold' fill='%2338bdf8'%3EAS%3C/text%3E%3C/svg%3E";
-                      }}
-                      className="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-2">
-                      <span className="text-[10px] text-white font-mono">Ayaan Shaikh</span>
-                    </div>
-                  </div>
-                  
-                  {/* National Hackathon Winner Floating Pill */}
-                  <motion.div
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.6, duration: 0.5 }}
-                    className="absolute -bottom-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1.5"
-                  >
-                    <Award className="w-3.5 h-3.5" />
-                    <span>Quasar 4.0 Winner</span>
-                  </motion.div>
-                </div>
+          <MagneticElement strength={0.2}>
+            <a
+              href="/resume.pdf"
+              download="Ayaan_Shaikh_Resume.pdf"
+              className="editorial-link text-xs sm:text-sm font-mono text-slate-600 dark:text-[#8e8e99] hover:text-slate-900 dark:hover:text-[#ededed] py-1"
+            >
+              <Download className="w-3.5 h-3.5 mr-1 inline" />
+              <span>[ DOWNLOAD CV ]</span>
+            </a>
+          </MagneticElement>
 
-                {/* Developer Code Snippet */}
-                <div className="bg-slate-900/90 dark:bg-slate-950/80 rounded-xl p-4 font-mono text-xs text-slate-300 space-y-1.5 border border-slate-800/80">
-                  <p className="text-slate-500 dark:text-slate-500">// Core developer profile</p>
-                  <p>
-                    <span className="text-pink-400">const</span>{' '}
-                    <span className="text-indigo-400">developer</span> = &#123;
-                  </p>
-                  <p className="pl-4">
-                    <span className="text-slate-400">name:</span>{' '}
-                    <span className="text-emerald-400">'Ayaan Shaikh'</span>,
-                  </p>
-                  <p className="pl-4">
-                    <span className="text-slate-400">stack:</span>{' '}
-                    <span className="text-cyan-400">['MongoDB', 'Express', 'React', 'Node']</span>,
-                  </p>
-                  <p className="pl-4">
-                    <span className="text-slate-400">internships:</span>{' '}
-                    <span className="text-yellow-400">['Labmentix', 'Code-Alpha']</span>,
-                  </p>
-                  <p className="pl-4">
-                    <span className="text-slate-400">openToWork:</span>{' '}
-                    <span className="text-emerald-400">true</span>
-                  </p>
-                  <p>&#125;;</p>
-                </div>
+          <MagneticElement strength={0.2}>
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="editorial-link text-xs sm:text-sm font-mono text-slate-600 dark:text-[#8e8e99] hover:text-slate-900 dark:hover:text-[#ededed] py-1"
+            >
+              <span>[ GET IN TOUCH ]</span>
+            </a>
+          </MagneticElement>
+        </div>
+      </div>
 
-                {/* Tech chips footer */}
-                <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-                  <div className="flex items-center gap-1 font-mono">
-                    <Code2 className="w-3.5 h-3.5 text-indigo-500" />
-                    <span>MERN Stack</span>
-                  </div>
-                  <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
-                    <Sparkles className="w-3 h-3" />
-                    Available for projects
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
+      {/* Bottom Metadata & Monospace Social Row (Tucked into corner) */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full mt-16 pt-6 border-t border-slate-200 dark:border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs text-slate-500 dark:text-[#686875]">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 inline-block animate-ping" />
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 inline-block -ml-3.5" />
+          <span>CURRENT: FULL-STACK INTERN @ LABMENTIX</span>
+        </div>
+
+        {/* Monospace tucked social links */}
+        <div className="flex items-center gap-4 text-slate-600 dark:text-[#8e8e99]">
+          <a
+            href="https://github.com/Git-ayaanshaikh24"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-cyan-400 transition-colors uppercase"
+          >
+            GH
+          </a>
+          <span>/</span>
+          <a
+            href="#" // TODO: Ayaan, LinkedIn URL
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-cyan-400 transition-colors uppercase"
+          >
+            LI
+          </a>
+          <span>/</span>
+          <a
+            href="#" // TODO: Ayaan, Twitter/X URL
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-cyan-400 transition-colors uppercase"
+          >
+            X
+          </a>
+          <span>/</span>
+          <a
+            href="mailto:ayaanswork24@gmail.com"
+            className="hover:text-cyan-400 transition-colors uppercase"
+          >
+            MAIL
+          </a>
+        </div>
       </div>
     </section>
   );

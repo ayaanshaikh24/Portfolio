@@ -1,113 +1,125 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { experiences } from '../data/experience';
-import { Briefcase, Calendar, MapPin, CheckCircle2, ChevronRight } from 'lucide-react';
+import SectionHeader from './SectionHeader';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Experience() {
+  const containerRef = useRef(null);
+  const lineRef = useRef(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      // Scrub the vertical timeline line
+      if (lineRef.current) {
+        gsap.fromTo(
+          lineRef.current,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: 'top 75%',
+              end: 'bottom 85%',
+              scrub: true,
+            },
+          }
+        );
+      }
+
+      // Stagger timeline items
+      gsap.fromTo(
+        '.timeline-entry',
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 75%',
+          },
+        }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="experience" className="py-24 relative bg-slate-100/40 dark:bg-slate-900/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
-          className="text-center max-w-3xl mx-auto mb-16"
-        >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 mb-3">
-            <Briefcase className="w-3.5 h-3.5" />
-            <span>Career Journey</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            Work <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500">Experience</span>
-          </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400">
-            Hands-on professional engineering experience building production-level full-stack applications.
-          </p>
-        </motion.div>
+    <section id="experience" ref={containerRef} className="py-24 sm:py-32 editorial-border-b">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <SectionHeader
+          index="04 / EXPERIENCE"
+          title="Work History & Internships"
+          subtitle="Chronological record of production engineering roles and full-stack software delivery."
+        />
 
-        {/* Timeline Layout */}
-        <div className="max-w-4xl mx-auto relative">
-          {/* Vertical timeline line */}
-          <div className="hidden md:block absolute left-8 top-6 bottom-6 w-0.5 bg-gradient-to-b from-indigo-500 via-cyan-500 to-indigo-800/40" />
+        <div className="relative max-w-4xl mx-auto pl-6 sm:pl-10">
+          {/* Vertical scrubbed timeline line */}
+          <div
+            ref={lineRef}
+            className="absolute left-0 top-3 bottom-3 w-[1px] bg-cyan-400 origin-top will-change-transform"
+          />
 
-          <div className="space-y-8 sm:space-y-10">
-            {experiences.map((exp, index) => (
-              <motion.div
+          <div className="space-y-16">
+            {experiences.map((exp, idx) => (
+              <div
                 key={exp.company + exp.duration}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                className="relative flex flex-col md:flex-row gap-6 md:gap-10"
+                className="timeline-entry relative grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start"
               >
-                {/* Timeline Icon Node */}
-                <div className="hidden md:flex flex-col items-center">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-cyan-500 p-0.5 shadow-lg shadow-indigo-600/20 z-10">
-                    <div className="w-full h-full bg-white dark:bg-slate-900 rounded-[14px] flex items-center justify-center">
-                      <Briefcase className="w-6 h-6 text-indigo-600 dark:text-cyan-400" />
-                    </div>
+                {/* Node dot */}
+                <div className="absolute -left-[27px] sm:-left-[43px] top-1.5 w-2.5 h-2.5 rounded-full bg-cyan-400 ring-4 ring-[#0a0a0c]" />
+
+                {/* Left Date / Company Monospace Column */}
+                <div className="md:col-span-4 font-mono space-y-1">
+                  <div className="text-xs text-cyan-500 dark:text-cyan-400 uppercase tracking-wider font-semibold">
+                    {exp.duration}
+                  </div>
+                  <div className="text-sm font-bold text-slate-900 dark:text-[#ededed]">
+                    {exp.company}
+                  </div>
+                  <div className="text-[11px] text-slate-500 dark:text-[#686875]">
+                    {exp.location} {exp.status === 'Current' && '// ACTIVE'}
                   </div>
                 </div>
 
-                {/* Experience Card */}
-                <div className="flex-1 glass-card rounded-2xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-xl hover:border-indigo-500/50 transition-all duration-300">
-                  <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-                    <div>
-                      <div className="flex items-center gap-2.5">
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white font-heading">
-                          {exp.role}
-                        </h3>
-                        {exp.status === 'Current' && (
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-                            Current
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-base font-semibold text-indigo-600 dark:text-cyan-400 mt-1">
-                        {exp.company}
-                      </p>
-                    </div>
+                {/* Right Narrative & Highlights Column */}
+                <div className="md:col-span-8 space-y-4">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-[#ededed] font-heading">
+                    {exp.role}
+                  </h3>
 
-                    <div className="flex flex-col sm:items-end text-xs text-slate-500 dark:text-slate-400 gap-1 font-mono">
-                      <span className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-lg">
-                        <Calendar className="w-3.5 h-3.5 text-indigo-500" />
-                        {exp.duration}
-                      </span>
-                      <span className="inline-flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-slate-400" />
-                        {exp.location}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Bullet points */}
-                  <div className="space-y-2.5 mb-6">
-                    {exp.highlights.map((point, pIdx) => (
-                      <div key={pIdx} className="flex items-start gap-2.5 text-sm text-slate-600 dark:text-slate-300">
-                        <CheckCircle2 className="w-4 h-4 text-indigo-500 dark:text-cyan-400 shrink-0 mt-1" />
-                        <span className="leading-relaxed">{point}</span>
+                  <div className="space-y-2 text-sm text-slate-600 dark:text-[#8e8e99] leading-relaxed">
+                    {exp.highlights.map((item, hIdx) => (
+                      <div key={hIdx} className="flex items-start gap-2.5">
+                        <span className="font-mono text-cyan-400 text-xs mt-0.5">→</span>
+                        <span>{item}</span>
                       </div>
                     ))}
                   </div>
 
-                  {/* Tech stack badges */}
-                  <div className="pt-4 border-t border-slate-200/70 dark:border-slate-800/80 flex flex-wrap gap-2 items-center">
-                    <span className="text-xs font-mono font-medium text-slate-500 dark:text-slate-400 mr-1">
-                      Stack:
-                    </span>
+                  {/* Tech stack row */}
+                  <div className="pt-2 flex flex-wrap gap-2">
                     {exp.tech.map((t) => (
                       <span
                         key={t}
-                        className="px-2.5 py-0.5 rounded-md text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80"
+                        className="font-mono text-[11px] px-2 py-0.5 bg-slate-100 dark:bg-[#111115] text-slate-700 dark:text-[#a0a0ab] border border-slate-200 dark:border-white/5"
                       >
                         {t}
                       </span>
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

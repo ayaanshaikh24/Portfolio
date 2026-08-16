@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import Lenis from 'lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -10,16 +15,19 @@ import Achievements from './components/Achievements';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function App() {
   const [isDark, setIsDark] = useState(() => {
-    // Initialize from localStorage or fallback to system preference
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       return savedTheme === 'dark';
     }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Default to dark mode for Kinetic Editorial aesthetic
+    return true;
   });
 
+  // Dark mode class sync
   useEffect(() => {
     const root = document.documentElement;
     if (isDark) {
@@ -35,9 +43,42 @@ export default function App() {
     setIsDark((prev) => !prev);
   };
 
+  // Lenis Smooth Scroll & GSAP ScrollTrigger integration
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+
+    const tickerCallback = (time) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(tickerCallback);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      gsap.ticker.remove(tickerCallback);
+      lenis.destroy();
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0a0f1d] dark:text-slate-100 transition-colors duration-300">
-      {/* Sticky Navbar */}
+    <div className="min-h-screen bg-[#f6f6f8] text-[#121216] dark:bg-[#0a0a0c] dark:text-[#ededed] transition-colors duration-300 antialiased selection:bg-cyan-400 selection:text-black">
+      {/* Custom Lagging Morphing Cursor */}
+      <CustomCursor />
+
+      {/* Editorial Header */}
       <Navbar isDark={isDark} toggleDarkMode={toggleDarkMode} />
 
       {/* Main Single Page Sections */}
@@ -52,7 +93,7 @@ export default function App() {
         <Contact />
       </main>
 
-      {/* Footer */}
+      {/* Minimal Monospace Footer */}
       <Footer />
     </div>
   );

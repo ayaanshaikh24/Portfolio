@@ -3,68 +3,115 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    color-scheme: dark;
+  }
+
   html {
     scroll-behavior: smooth;
     font-family: 'Inter', sans-serif;
+    background-color: #0a0a0c;
+  }
+
+  body {
+    background-color: #0a0a0c;
+    color: #ededed;
+    overflow-x: hidden;
+    letter-spacing: -0.01em;
+  }
+
+  html:not(.dark) body {
+    background-color: #f6f6f8;
+    color: #121216;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.03em;
   }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Custom hairline borders */
+.editorial-border-t {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.editorial-border-b {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.editorial-border-y {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+html:not(.dark) .editorial-border-t {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+html:not(.dark) .editorial-border-b {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+html:not(.dark) .editorial-border-y {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
 }
-
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: #0a0a0c;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #6366f1;
-  border-radius: 9999px;
+  background: #2a2a35;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #4f46e5;
+  background: #3e3e4f;
 }
 
-/* Glassmorphism utilities */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+/* Link underline animations */
+.editorial-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.2s ease;
 }
 
-.dark .glass-panel {
-  background: rgba(17, 24, 39, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.editorial-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+.editorial-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
-.dark .glass-card {
-  background: rgba(22, 31, 56, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-/* Glow effects */
-.glow-primary {
-  box-shadow: 0 0 50px -10px rgba(99, 102, 241, 0.3);
-}
-
-.glow-cyan {
-  box-shadow: 0 0 50px -10px rgba(6, 182, 212, 0.3);
+/* Hide default cursor on desktop when custom cursor is active */
+@media (pointer: fine) {
+  body.has-custom-cursor {
+    cursor: none;
+  }
+  body.has-custom-cursor a,
+  body.has-custom-cursor button,
+  body.has-custom-cursor input,
+  body.has-custom-cursor textarea,
+  body.has-custom-cursor [role="button"] {
+    cursor: none;
+  }
 }
