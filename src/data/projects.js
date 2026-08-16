@@ -18,22 +18,22 @@ export const projects = [
     isPlaceholder: false
   },
   {
-    id: "project-placeholder-2",
-    title: "MERN Stack E-Commerce Platform", // TODO: Ayaan, replace with your 2nd project title
-    tagline: "Scalable digital commerce architecture with secure payments",
-    description: "Full-featured shopping platform with customer authentication, product catalog filtering, cart management, and seamless payment gateway integration.",
-    image: "/images/projects/project2.png", // TODO: Replace with your project screenshot
+    id: "infytion-enterprise",
+    title: "Infytion: Enterprise Architecture & Platform",
+    tagline: "Architecture-first digital platforms, edge APIs & interactive 3D UI",
+    description: "Architected and developed a modern enterprise digital platform for Infytion, featuring an architecture-first engineering approach with high-performance edge APIs, interactive 3D WebGL graphics, and modular multi-industry solution suites.",
+    image: "/images/projects/project2.png", // Infytion platform preview
     features: [
-      "Interactive product catalog with search, category filtering, and sorting",
-      "Secure user authentication with JWT and encrypted checkout pipeline",
-      "Admin panel for inventory management, orders, and sales analytics"
+      "Engineered responsive architecture with comprehensive solution suites (FinTech, HealthTech, Logistics)",
+      "Integrated interactive 3D WebGL canvas graphics and smooth micro-interactions for high engagement",
+      "Designed scalable modular component hierarchies with Next.js, TypeScript, and modern edge infrastructure"
     ],
-    tech: ["React", "Node.js", "Express.js", "MongoDB", "Redux"],
-    category: "Full-Stack (MERN)",
-    github: "https://github.com/Git-ayaanshaikh24", // TODO: Update with your repo link
-    demo: "#", // TODO: Update with live demo URL
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "WebGL", "Edge APIs"],
+    category: "Enterprise Web App",
+    github: "https://github.com/ayaanshaikh24/Infytion",
+    demo: "https://ltech-xi.vercel.app/",
     featured: false,
-    isPlaceholder: true // Marked as placeholder for Ayaan to customize
+    isPlaceholder: false
   },
   {
     id: "project-placeholder-3",
