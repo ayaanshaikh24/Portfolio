@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#022c22" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="480" fill="url(#bg3)" />
+  <rect x="50" y="40" width="700" height="400" rx="12" fill="#061c18" stroke="#134e4a" />
+  <text x="50%" y="220" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="24" fill="#ffffff">Real-Time Collaborative Workspace</text>
+  <text x="50%" y="260" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="14" fill="#2dd4bf">// Project Placeholder 3 — Drop screenshot in public/images/projects/project3.png</text>
+</svg>
